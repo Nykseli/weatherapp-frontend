@@ -8,6 +8,8 @@ class WeatherApp extends React.Component {
 
     this.state = {
       cityName: '',
+      newName: '',
+      cityTemp: 0,
       cityData: {},
       cities: [],
       showCity: false
@@ -27,10 +29,16 @@ class WeatherApp extends React.Component {
   handleNewCity() {
     // Dont add empty names
     if(this.state.cityName){
-      console.log(this.state.cityName)
-      this.setState({
-        showCity: true,
-      })
+      fetch("http://localhost:8000/cityWeather/" + this.state.cityName)
+      .then(result=>result.json())
+      .then(json => {
+        console.log(json);
+        this.setState({
+          cityTemp: json.temperature,
+          newName: json.cityName,
+          showCity: true,
+        });
+      });
     }
   }
 
@@ -38,7 +46,7 @@ class WeatherApp extends React.Component {
   handleAddCity() {
     // Dont add empty names
     if(this.state.cityName){
-      let newCity = {name: this.state.cityName, temperature: 24}
+      let newCity = {name: this.state.cityName, temperature: this.state.cityTemp}
       this.setState({
         cities: this.state.cities.concat([newCity])
       })
@@ -62,7 +70,7 @@ class WeatherApp extends React.Component {
           onClick={this.handleNewCity} >
           Get weather
         </button>
-        {this.state.showCity ? <WeatherView cityName={this.state.cityName} adder={this.handleAddCity}/> : '' }
+        {this.state.showCity ? <WeatherView cityName={this.state.newName} temperature={this.state.cityTemp} adder={this.handleAddCity}/> : '' }
         <WeatherViewList cities={this.state.cities} />
       </div>
     )
