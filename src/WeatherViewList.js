@@ -17,7 +17,7 @@ class WeatherViewList extends React.Component {
         {this.props.cities.map((city, i) => {
           return (
             <div key={i} className="weather-view-list-item">
-              <h5>City name: {city.name}</h5>
+              <h5>City name: {city.cityName}</h5>
               <h6>Temperature: {city.temperature}</h6>
             </div>
           )

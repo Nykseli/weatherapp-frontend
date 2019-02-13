@@ -20,6 +20,10 @@ class WeatherApp extends React.Component {
     this.handleAddCity = this.handleAddCity.bind(this)
   }
 
+  componentDidMount() {
+    this.getCityData()
+  }
+
   updateNewCity(e) {
     this.setState({
       cityName : e.target.value
@@ -46,15 +50,31 @@ class WeatherApp extends React.Component {
   handleAddCity() {
     // Dont add empty names
     if(this.state.cityName){
-      let newCity = {name: this.state.cityName, temperature: this.state.cityTemp}
+      let newCity = {cityName: this.state.cityName, temperature: this.state.cityTemp}
       this.setState({
         cities: this.state.cities.concat([newCity])
+      })
+      console.log(JSON.stringify({
+        "data": newCity
+      }))
+      fetch('http://localhost:8000/saveCity', {
+        method: 'POST',
+        body: JSON.stringify({
+          data: newCity
+        })
       })
     }
   }
 
-  getDataFromCity(){
-    return <p>TODO:</p>
+  getCityData(){
+    fetch("http://localhost:8000/getCities")
+      .then(result=>result.json())
+      .then(json => {
+        console.log(json);
+        this.setState({
+          cities: json.data
+        });
+      });
   }
 
   render() {
