@@ -1,0 +1,13 @@
+
+/* WeatherViewList */
+
+.weather-view-list {
+    margin-top: 25px;
+    font-size: 18px;
+}
+
+.weather-view-list-item {
+    border-color: #000000;
+    border-style: solid;
+    border-width: 2px;
+}

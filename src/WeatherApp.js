@@ -36,7 +36,6 @@ class WeatherApp extends React.Component {
       fetch("http://localhost:8000/cityWeather/" + this.state.cityName)
       .then(result=>result.json())
       .then(json => {
-        console.log(json);
         this.setState({
           cityTemp: json.temperature,
           newName: json.cityName,
@@ -54,9 +53,6 @@ class WeatherApp extends React.Component {
       this.setState({
         cities: this.state.cities.concat([newCity])
       })
-      console.log(JSON.stringify({
-        "data": newCity
-      }))
       fetch('http://localhost:8000/saveCity', {
         method: 'POST',
         body: JSON.stringify({
@@ -70,16 +66,17 @@ class WeatherApp extends React.Component {
     fetch("http://localhost:8000/getCities")
       .then(result=>result.json())
       .then(json => {
-        console.log(json);
-        this.setState({
-          cities: json.data
-        });
+        if(json.data) {
+          this.setState({
+            cities: json.data
+          });
+        }
       });
   }
 
   render() {
     return (
-      <div>
+      <div className="weather-app">
         <h1>Weather Application:</h1>
         <input
         type="text"
